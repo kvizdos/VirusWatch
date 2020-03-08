@@ -1,0 +1,141 @@
+body {
+    background-color: rgb(248, 248, 248);
+    font-family: 'Roboto', sans-serif;
+    transition: .15s linear;
+    margin: 0;
+    padding: 0;
+}
+
+body.safe {
+    background-color: rgb(31, 200, 102);
+}
+
+body.contaminated {
+    background-color: rgb(243, 144, 30);
+}
+
+body.danger {
+    background-color: rgb(224, 37, 12);
+}
+
+#overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+#overlay * {
+    transition: .25s;
+}
+
+#center {
+    
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .25);
+    
+}
+
+#map {
+    z-index: 1;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#map svg {
+    width: 100%;
+    height: 100%;
+}
+
+#results {
+    text-align: center;
+    opacity: 0;
+    transition: .35s;
+    display: none;
+}
+
+#results.show {
+    display: inherit;
+    opacity: 1;
+}
+
+.card {
+    overflow: hidden;
+    width: 80vw;
+    background-color: white;
+    border-radius: 10px;
+
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .25);
+    padding: 10px;
+
+}
+
+h1 {
+    font-size: 24pt;
+    padding: 0;
+    margin: 5px;
+}
+
+p {
+    font-size: 18pt;
+    padding: 0;
+    margin: 5px;
+}
+
+input {
+    margin-top: 15px;
+    padding: 5px;
+    font-size: 16pt;
+    border: 2px solid rgb(190, 190, 190);
+    border-radius: 10px;
+    outline: none;
+    width: 70%;
+}
+
+button {
+    width: 50%;
+    background-color: rgb(82, 175, 241);
+    font-size: 16pt;
+    padding: 5px;
+    border: 0;
+    border-radius: 10px;
+    color: white;
+    margin: 10px;
+    outline: none;
+}
+
+table {
+    font-size: 14pt;
+    overflow: scroll;
+
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    #overlay {
+        width: 100%;
+
+    }
+    .card {
+        width: 50vw;
+    }
+    
+}

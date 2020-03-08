@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VirusWatch.app</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/style.css">
+
+    <script>
+        const lookupZIP = (zip = document.querySelector("#zip").value) => {
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                const data = JSON.parse(this.responseText);
+
+                if(data.error != undefined) {
+                    alert("That ZIP code does not seem to exist.")
+                    return;
+                }
+
+                const regional = data.regional;
+                const state = data.state;
+
+                const area = `${regional['Province/State']}, ${regional['Country/Region']}`;
+                const confirmed = regional.Confirmed;
+                const dead = regional.Deaths;
+                const recovered = regional.Recovered;
+
+                const stateconfirmed = state.Confirmed;
+                const statedead = state.Deaths;
+                const staterecovered = state.Recovered;
+
+                const regionalTable = document.querySelector('.regionTable').children;
+                      regionalTable[0].innerText = area
+                      regionalTable[1].innerText = confirmed
+                      regionalTable[2].innerText = dead
+                      regionalTable[3].innerText = recovered
+
+                const stateTable = document.querySelector('.stateTable').children;
+                      stateTable[0].innerText = "Statewide"
+                      stateTable[1].innerText = stateconfirmed
+                      stateTable[2].innerText = statedead
+                      stateTable[3].innerText = staterecovered
+
+                const resultText = document.querySelector('.result');
+
+                document.querySelector('body').classList = "";
+
+                if(confirmed == 0) {
+                    document.querySelector('body').classList.add("safe");
+                    resultText.innerText = "You are safe..ish";
+                }
+                
+                if(confirmed > 0 || stateconfirmed > 0 || statedead > 0) {
+                    document.querySelector('body').classList.add("contaminated");
+                    resultText.innerText = confirmed > 0 ? "Your county has had reported cases." : confirmed > 0 && statedead > 0 ? "Your county has had cases and your immediate area has had deaths." : "Your county has not reported any cases but your state has had deaths.";
+                }
+
+                if(dead > 0) {
+                    document.querySelector('body').classList.add("danger");
+                    resultText.innerText = "You are in danger; Coronavirus has been deadly in your county.";
+                }
+
+                const resultBox = document.querySelector('#results');
+                resultBox.classList.add('show')
+            }
+            });
+
+            xhr.open("GET", `http://localhost/api/lookup?zip=${zip}`);
+            xhr.send();
+        }
+    </script>
+</head>
+<body>
+    <!-- <section id="map">
+       <object type="image/svg+xml" data="/assets/usaHigh.svg"></object>
+    </section> -->
+    <section id="overlay">
+        <!-- <section id="info" class="card">
+            <a href="#">If you think you have Coronavirus, please visit your local testing center</a>
+        </section> -->
+        <section id="center" class="card">
+            <h1>VirusWatch.app</h1>
+            <p>Your one stop shop for all things Coronavirus</p>
+            <input id="zip" placeholder="Enter ZIP code">
+            <button id="checkZIP" onclick="lookupZIP()">Check</button>
+        </section>
+        <section id="results" class="card">
+            <p class="result"></p>
+            <table style="width:100%">
+                <tr>
+                    <th>Area</th>
+                    <th>Confirmed Cases</th>
+                    <th>Deaths</th> 
+                    <th>Recoveries</th>
+                </tr>
+                <tr class="regionTable">
+                    <td class="region name">Jill</td>
+                    <td class="region confirmed">Smith</td>
+                    <td class="region deaths">Smith</td>
+                    <td class="region recovered">Smith</td>
+                </tr>
+                <tr class="stateTable">
+                    <td class="state name">Jill</td>
+                    <td class="state confirmed">Smith</td>
+                    <td class="state deaths">Smith</td>
+                    <td class="state recovered">Smith</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="ad" class="card">
+            <script type="text/javascript">
+                amzn_assoc_placement = "adunit0";
+                amzn_assoc_tracking_id = "viruswatch-app-20";
+                amzn_assoc_ad_mode = "search";
+                amzn_assoc_ad_type = "smart";
+                amzn_assoc_marketplace = "amazon";
+                amzn_assoc_region = "US";
+                amzn_assoc_default_search_phrase = "n95 respirator";
+                amzn_assoc_default_category = "All";
+                amzn_assoc_linkid = "35c37ac783b94332308e5f7cc65e49a8";
+                amzn_assoc_design = "in_content";
+                </script>
+                <script src="//z-na.amazon-adsystem.com/widgets/onejs?MarketPlace=US"></script>
+        </section>
+    </section>
+
+    <script type="text/javascript">
+        amzn_assoc_ad_type = "link_enhancement_widget";
+        amzn_assoc_tracking_id = "viruswatch-app-20";
+        amzn_assoc_linkid = "d849959819d51ebc26758d0e4dd4fcd9";
+        amzn_assoc_placement = "";
+        amzn_assoc_marketplace = "amazon";
+        amzn_assoc_region = "US";
+    </script>
+    <script src="//ws-na.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&Operation=GetScript&ID=OneJS&WS=1&MarketPlace=US"></script>
+</body>
+</html>
